@@ -34,12 +34,46 @@ public class Main {
             } while(!header.isEmpty());
             System.out.println(" richiesta terminata");
 
-            String responseBody = "Ciao a tutti";
-            out.writeBytes("HTTP/1.1 200 OK\n");
-            out.writeBytes("Content-Type: text/plain\n");
+            if(resource.equals("/")) {
+                resource = "/index.html";
+            }
+
+            String responseBody;
+            String typeText;
+            String risultato;
+
+            switch (resource) {
+                case "/index.html":
+                responseBody = "<html><body><h1> Pagina index</h1></body></html>";
+                    typeText = "html";
+                    risultato = "200";
+                break;
+
+                case "/pagina.html":
+                    responseBody = "<html><body><h1> Pagina: pagina</h1></body></html>";
+                    typeText = "html";
+                    risultato = "200";
+                break;
+
+                case "/file.txt":
+                    responseBody= "<html><body><h1> Pagina file</h1></body></html>";
+                    typeText = "txt";
+                    risultato = "200";
+                break;
+
+                default:
+                    responseBody = "";
+                    typeText = "";
+                    risultato = "404";
+                break;
+            }
+            
+            out.writeBytes(version + " " + risultato + "\n");
+            out.writeBytes("Content-Type:"  + typeText + "\n");
             out.writeBytes("Content-Length: " + responseBody.length() + "\n");
             out.writeBytes("\n");
             out.writeBytes(responseBody);
+            
 
         }
     }
